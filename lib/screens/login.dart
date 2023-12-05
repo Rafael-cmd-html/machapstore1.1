@@ -37,6 +37,7 @@ class _login_state extends State<login> {
               children: <Widget>[
                 Container(
                   height: 300,
+                  margin: EdgeInsets.symmetric(horizontal: 10),
                   width: double.infinity,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
