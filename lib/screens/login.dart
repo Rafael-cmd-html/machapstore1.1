@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:machapstore1/screens/signUp.dart';
 import 'package:machapstore1/widgets/change_screen.dart';
@@ -20,54 +21,22 @@ String ep_password =
 RegExp reg_exp_email = new RegExp(ep_email);
 RegExp reg_exp_password = new RegExp(ep_password);
 
+String? email;
+String? password;
+
 class _login_state extends State<login> {
-  void validation() {
+  void validation() async {
     final FormState? _form = _form_key.currentState;
     if (_form != null && _form.validate()) {
-      print("Yes");
-    } else {
-      print("No");
-    }
-  }
-
-//Widget to build the textFields
-  Widget _buildTextFields() {
-    return Container(
-      height: 200,
-      child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            MyTextField(
-              name: "Email",
-              validator: (value) {
-                if (value == null) {
-                  return "Please fill email";
-                } else if (!reg_exp_email.hasMatch(value)) {
-                  return "Email is invalid";
-                }
-                return null;
-              },
-            ),
-            MyPasswordField(
-                name: "Password",
-                validator: (value) {
-                  if (value == null) {
-                    return "Please fill password";
-                  } else if (value.length < 8) {
-                    return "Password is too short, try with 8 chars";
-                  } else if (!reg_exp_password.hasMatch(value)) {
-                    return "Password must contain at least one uppercase, one lower case, at least one digit and one special char ";
-                  }
-                },
-                obscure_text: obscure_text,
-                onTap: () {
-                  setState(() {
-                    obscure_text = !obscure_text;
-                  });
-                  FocusScope.of(context).unfocus();
-                }),
-          ]),
-    );
+      try {
+        UserCredential result = await FirebaseAuth.instance
+            .signInWithEmailAndPassword(email: email!, password: password!);
+      } on FirebaseAuthException catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(e.message!),
+        ));
+      }
+    } else {}
   }
 
 //Widget to build the rest of the app, in this case we don´t need a "_build_bottom widget"
@@ -93,7 +62,7 @@ class _login_state extends State<login> {
                               CircleAvatar(
                                   radius: 50,
                                   backgroundImage:
-                                      AssetImage('images/machape.png'))
+                                      AssetImage('assets/images/machape.png'))
                             ],
                           ),
                           Text(
@@ -124,5 +93,55 @@ class _login_state extends State<login> {
                     )
                   ],
                 )))));
+  }
+
+//Widget to build the textFields
+  Widget _buildTextFields() {
+    return Container(
+      height: 200,
+      child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            MyTextField(
+              name: "Email",
+              onChanged: (value) {
+                setState(() {
+                  email = value;
+                });
+              },
+              validator: (value) {
+                if (value == null) {
+                  return "Please fill email";
+                } else if (!reg_exp_email.hasMatch(value)) {
+                  return "Email is invalid";
+                }
+                return null;
+              },
+            ),
+            MyPasswordField(
+                name: "Password",
+                onChanged: (value) {
+                  setState(() {
+                    password = value;
+                  });
+                },
+                validator: (value) {
+                  if (value == null) {
+                    return "Please fill password";
+                  } else if (value.length < 8) {
+                    return "Password is too short, try with 8 chars";
+                  } else if (!reg_exp_password.hasMatch(value)) {
+                    return "Password must contain at least one uppercase, one lower case, at least one digit and one special char ";
+                  }
+                },
+                obscure_text: obscure_text,
+                onTap: () {
+                  setState(() {
+                    obscure_text = !obscure_text;
+                  });
+                  FocusScope.of(context).unfocus();
+                }),
+          ]),
+    );
   }
 }
