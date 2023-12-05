@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:machapstore1/screens/signUp.dart';
+import 'package:machapstore1/widgets/change_screen.dart';
 import 'package:machapstore1/widgets/my_button.dart';
+import 'package:machapstore1/widgets/my_text_form_field.dart';
+import 'package:machapstore1/widgets/password_text_field.dart';
 
 class login extends StatefulWidget {
   @override
@@ -27,6 +30,47 @@ class _login_state extends State<login> {
     }
   }
 
+//Widget to build the textFields
+  Widget _buildTextFields() {
+    return Container(
+      height: 200,
+      child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            MyTextField(
+              name: "Email",
+              validator: (value) {
+                if (value == null) {
+                  return "Please fill email";
+                } else if (!reg_exp_email.hasMatch(value)) {
+                  return "Email is invalid";
+                }
+                return null;
+              },
+            ),
+            MyPasswordField(
+                name: "Password",
+                validator: (value) {
+                  if (value == null) {
+                    return "Please fill password";
+                  } else if (value.length < 8) {
+                    return "Password is too short, try with 8 chars";
+                  } else if (!reg_exp_password.hasMatch(value)) {
+                    return "Password must contain at least one uppercase, one lower case, at least one digit and one special char ";
+                  }
+                },
+                obscure_text: obscure_text,
+                onTap: () {
+                  setState(() {
+                    obscure_text = !obscure_text;
+                  });
+                  FocusScope.of(context).unfocus();
+                }),
+          ]),
+    );
+  }
+
+//Widget to build the rest of the app, in this case we don´t need a "_build_bottom widget"
   Widget build(BuildContext context) {
     return Scaffold(
         body: Container(
@@ -38,11 +82,9 @@ class _login_state extends State<login> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Container(
-                      height: 500,
                       margin: EdgeInsets.symmetric(horizontal: 10),
                       width: double.infinity,
                       child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: <Widget>[
                           Stack(
                             alignment: Alignment.center,
@@ -61,79 +103,21 @@ class _login_state extends State<login> {
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white),
                           ),
-                          TextFormField(
-                            style: TextStyle(color: Colors.white),
-                            validator: (value) {
-                              if (value == null || value == "") {
-                                return "Please fill email";
-                              } else if (!reg_exp_email.hasMatch(value)) {
-                                return "Email is invalid";
-                              }
-                              return null;
-                            },
-                            decoration: InputDecoration(
-                                border: OutlineInputBorder(),
-                                hintText: "Email",
-                                hintStyle: TextStyle(color: Colors.white)),
-                          ),
-                          TextFormField(
-                            obscureText: obscure_text,
-                            style: TextStyle(color: Colors.white),
-                            validator: (value) {
-                              if (value == null) {
-                                return "Please fill password";
-                              } else if (value.length < 8) {
-                                return "Password is too short, try with 8 chars";
-                              } else if (!reg_exp_password.hasMatch(value)) {
-                                return "Password must contain at least one uppercase, one lower case, at least one digit and one special char ";
-                              }
-                            },
-                            decoration: InputDecoration(
-                                border: OutlineInputBorder(),
-                                hintText: "Password",
-                                suffixIcon: GestureDetector(
-                                  onTap: () {
-                                    FocusScope.of(context).unfocus();
-                                    setState(() {
-                                      obscure_text = !obscure_text;
-                                    });
-                                  },
-                                  child: Icon(
-                                      obscure_text == true
-                                          ? Icons.visibility
-                                          : Icons.visibility_off,
-                                      color: Colors.white),
-                                ),
-                                hintStyle: TextStyle(color: Colors.white)),
-                          ),
+                          _buildTextFields(),
                           my_button(
                             name: "Login",
                             onPressed: () {
                               validation();
                             },
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Text(
-                                "I don't have an account",
-                                style: TextStyle(color: Colors.white),
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  Navigator.of(context).pushReplacement(
-                                      MaterialPageRoute(
-                                          builder: (ctx) => sign_up()));
-                                },
-                                child: Text(
-                                  "SignUp",
-                                  style: TextStyle(color: Colors.cyan),
-                                ),
-                              )
-                            ],
+                          ChangScreen(
+                            name: "SignUp",
+                            descriptionLink: "I don´t have an account",
+                            onTap: () {
+                              Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(
+                                      builder: (ctx) => sign_up()));
+                            },
                           )
                         ],
                       ),

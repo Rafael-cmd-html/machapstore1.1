@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:machapstore1/screens/login.dart';
+import 'package:machapstore1/widgets/my_text_form_field.dart';
+import 'package:machapstore1/widgets/password_text_field.dart';
 import '../widgets/my_button.dart';
+
+import '../widgets/change_screen.dart';
 
 class sign_up extends StatefulWidget {
   @override
@@ -28,128 +32,125 @@ class _sign_up_state extends State<sign_up> {
     }
   }
 
+//Widget builder for the textFields and passwordfields, made also with other widgets of the app
+  Widget _buildAllTextFormField() {
+    return Container(
+        height: 400,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            Stack(
+              alignment: Alignment.center,
+              children: [
+                // Coloca la imagen redonda aquí
+                CircleAvatar(
+                    radius: 50,
+                    backgroundImage: AssetImage('images/machape.png'))
+              ],
+            ),
+            MyTextField(
+              validator: (value) {
+                if (value == null) {
+                  return "Please fill name";
+                } else if (value.isEmpty) {
+                  return "Please fill name";
+                } else if (value.length < 6) {
+                  return "Name is too short";
+                }
+                return null;
+              },
+              name: "Name",
+            ),
+            MyTextField(
+                validator: (value) {
+                  if (value == null) {
+                    return "Please fill email";
+                  } else if (!reg_exp_email.hasMatch(value)) {
+                    return "Email is invalid";
+                  }
+                  return null;
+                },
+                name: "Email"),
+            MyPasswordField(
+              obscure_text: obscure_text,
+              validator: (value) {
+                if (value == null) {
+                  return "Please fill password";
+                } else if (value.length < 8) {
+                  return "Password is too short, try with 8 chars";
+                } else if (!reg_exp_password.hasMatch(value)) {
+                  return "Password must contain at least one uppercase, one lower case, at least one digit and one special char ";
+                }
+              },
+              name: "Password",
+              onTap: () {
+                setState(() {
+                  obscure_text = !obscure_text;
+                });
+                FocusScope.of(context).unfocus();
+              },
+            ),
+          ],
+        ));
+  }
+
+//Widget builder for the bottom of the app, bottom button and link to other pages
+  Widget _buildBottom() {
+    return Container(
+        height: 500,
+        margin: EdgeInsets.symmetric(horizontal: 10),
+        width: double.infinity,
+        child: Column(
+          children: <Widget>[
+            _buildAllTextFormField(),
+            my_button(
+                onPressed: () {
+                  validation();
+                },
+                name: "SignUp"),
+            ChangScreen(
+              name: "Login",
+              descriptionLink: "Already have an account?",
+              onTap: () {
+                Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (ctx) => login()));
+              },
+            )
+          ],
+        ));
+  }
+
+//Widget root, the most important widget, build all the page with the help from the other two widgets
   Widget build(BuildContext context) {
     return Scaffold(
-        body: SafeArea(
-            child: Form(
-      key: _form_key,
-      child: Container(
-        child: Column(children: <Widget>[
-          Container(
-              height: 70,
-              width: double.infinity,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: <Widget>[
-                  Text(
-                    "Sign Up",
-                    style: TextStyle(
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold,
-                    ),
+        body: Container(
+            color: Color(0xFF595959),
+            child: SafeArea(
+                child: Form(
+              key: _form_key,
+              child: Container(
+                child: Column(children: <Widget>[
+                  Container(
+                      height: 70,
+                      width: double.infinity,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: <Widget>[
+                          Text(
+                            "Sign Up",
+                            style: TextStyle(
+                                fontSize: 30,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white),
+                          ),
+                        ],
+                      )),
+                  SizedBox(
+                    height: 20,
                   ),
-                ],
-              )),
-          SizedBox(
-            height: 20,
-          ),
-          Container(
-              height: 500,
-              margin: EdgeInsets.symmetric(horizontal: 10),
-              width: double.infinity,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      // Coloca la imagen redonda aquí
-                      CircleAvatar(
-                          radius: 50,
-                          backgroundImage: AssetImage('images/machape.png'))
-                    ],
-                  ),
-                  TextFormField(
-                      validator: (value) {
-                        if (value == null) {
-                          return "Please fill name";
-                        } else if (value.isEmpty) {
-                          return "Please fill name";
-                        } else if (value.length < 6) {
-                          return "Name is too short";
-                        }
-                        return null;
-                      },
-                      decoration: InputDecoration(
-                        hintText: "Name",
-                        hintStyle: TextStyle(color: Colors.black),
-                        border: OutlineInputBorder(),
-                      )),
-                  TextFormField(
-                      validator: (value) {
-                        if (value == null) {
-                          return "Please fill email";
-                        } else if (!reg_exp_email.hasMatch(value)) {
-                          return "Email is invalid";
-                        }
-                        return null;
-                      },
-                      decoration: InputDecoration(
-                        hintText: "Email",
-                        hintStyle: TextStyle(color: Colors.black),
-                        border: OutlineInputBorder(),
-                      )),
-                  TextFormField(
-                      obscureText: obscure_text,
-                      validator: (value) {
-                        if (value == null) {
-                          return "Please fill password";
-                        } else if (value.length < 8) {
-                          return "Password is too short, try with 8 chars";
-                        } else if (!reg_exp_password.hasMatch(value)) {
-                          return "Password must contain at least one uppercase, one lower case, at least one digit and one special char ";
-                        }
-                      },
-                      decoration: InputDecoration(
-                        hintText: "Password",
-                        suffixIcon: GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              obscure_text = !obscure_text;
-                            });
-                            FocusScope.of(context).unfocus();
-                          },
-                          child: Icon(
-                              obscure_text == true
-                                  ? Icons.visibility
-                                  : Icons.visibility_off,
-                              color: Colors.black),
-                        ),
-                        hintStyle: TextStyle(color: Colors.black),
-                        border: OutlineInputBorder(),
-                      )),
-                  my_button(
-                      onPressed: () {
-                        validation();
-                      },
-                      name: "SignUp"),
-                  Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Text("Do you have already an account? "),
-                        GestureDetector(
-                          child: Text("Login",
-                              style: TextStyle(color: Colors.cyan)),
-                          onTap: () {
-                            Navigator.of(context).pushReplacement(
-                                MaterialPageRoute(builder: (ctx) => login()));
-                          },
-                        )
-                      ])
-                ],
-              ))
-        ]),
-      ),
-    )));
+                  _buildBottom(),
+                ]),
+              ),
+            ))));
   }
 }
