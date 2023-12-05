@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:machapstore1/screens/login.dart';
+import '../widgets/my_button.dart';
 
 class sign_up extends StatefulWidget {
   @override
@@ -108,23 +110,20 @@ class _sign_up_state extends State<sign_up> {
                             });
                             FocusScope.of(context).unfocus();
                           },
-                          child: Icon(Icons.visibility, color: Colors.black),
+                          child: Icon(
+                              obscure_text == true
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                              color: Colors.black),
                         ),
                         hintStyle: TextStyle(color: Colors.black),
                         border: OutlineInputBorder(),
                       )),
-                  Container(
-                      height: 45,
-                      width: 245,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          primary: Colors.blueGrey[400],
-                        ),
-                        onPressed: () {
-                          validation();
-                        },
-                        child: Text('Sign Up'),
-                      )),
+                  my_button(
+                      onPressed: () {
+                        validation();
+                      },
+                      name: "SignUp"),
                   Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
@@ -132,6 +131,10 @@ class _sign_up_state extends State<sign_up> {
                         GestureDetector(
                           child: Text("Login",
                               style: TextStyle(color: Colors.cyan)),
+                          onTap: () {
+                            Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(builder: (ctx) => login()));
+                          },
                         )
                       ])
                 ],
