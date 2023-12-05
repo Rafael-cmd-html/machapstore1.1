@@ -36,7 +36,7 @@ class _sign_up_state extends State<sign_up> {
       child: Container(
         child: Column(children: <Widget>[
           Container(
-              height: 100,
+              height: 70,
               width: double.infinity,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -54,12 +54,21 @@ class _sign_up_state extends State<sign_up> {
             height: 20,
           ),
           Container(
-              height: 400,
+              height: 500,
               margin: EdgeInsets.symmetric(horizontal: 10),
               width: double.infinity,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
+                  Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      // Coloca la imagen redonda aquí
+                      CircleAvatar(
+                          radius: 50,
+                          backgroundImage: AssetImage('images/machape.png'))
+                    ],
+                  ),
                   TextFormField(
                       validator: (value) {
                         if (value == null) {

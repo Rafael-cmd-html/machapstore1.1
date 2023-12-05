@@ -36,12 +36,21 @@ class _login_state extends State<login> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Container(
-                  height: 300,
+                  height: 500,
                   margin: EdgeInsets.symmetric(horizontal: 10),
                   width: double.infinity,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
+                      Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          // Coloca la imagen redonda aquí
+                          CircleAvatar(
+                              radius: 50,
+                              backgroundImage: AssetImage('images/machape.png'))
+                        ],
+                      ),
                       Text(
                         "Login",
                         style: TextStyle(
