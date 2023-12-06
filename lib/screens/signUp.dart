@@ -3,41 +3,43 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:machapstore1/screens/login.dart';
-import 'package:machapstore1/widgets/my_text_form_field.dart';
-import 'package:machapstore1/widgets/password_text_field.dart';
-import '../widgets/my_button.dart';
+import 'package:machapstore1/widgets/myTextFormField.dart';
+import 'package:machapstore1/widgets/passwordField.dart';
+import '../widgets/myButton.dart';
 
-import '../widgets/change_screen.dart';
+import '../widgets/changeScreen.dart';
 
-class sign_up extends StatefulWidget {
+//StatefulWidget class after we pass the state with the _sign_up_state class
+class SignUp extends StatefulWidget {
   @override
-  _sign_up_state createState() => _sign_up_state();
+  _SignUpState createState() => _SignUpState();
 }
 
-final GlobalKey<FormState> _form_key = GlobalKey<FormState>();
-final GlobalKey<ScaffoldState> _scaffold_key = GlobalKey<ScaffoldState>();
-String ep_email =
-    r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
-String ep_password =
-    r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
+//Variables declaration
+final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+RegExp regExpEmail = new RegExp(epEmail);
+RegExp regExpPassword = new RegExp(epPassword);
 
-RegExp reg_exp_email = new RegExp(ep_email);
-RegExp reg_exp_password = new RegExp(ep_password);
-
-bool obscure_text = true;
+bool obscureText = true;
 
 String? email;
 String? password;
 
-class _sign_up_state extends State<sign_up> {
+//RegularExpresion type variables
+String epEmail =
+    r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
+String epPassword =
+    r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
+
+//Classs who is in charge of build all the screen, widgets and state of our statefull widget class:SignUp
+class _SignUpState extends State<SignUp> {
   void validation() async {
     await Firebase.initializeApp();
-    final FormState? _form = _form_key.currentState;
+    final FormState? _form = _formKey.currentState;
     if (_form?.validate() ?? false) {
       try {
         UserCredential result = await FirebaseAuth.instance
             .createUserWithEmailAndPassword(email: email!, password: password!);
-        // print(result.user?.uid ?? false);
       } on FirebaseAuthException catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(e.message!),
@@ -45,18 +47,18 @@ class _sign_up_state extends State<sign_up> {
       }
     } else {}
   }
+
   //Widget root, the most important widget, build all the page with the help from the other two widgets
 
   Widget build(BuildContext context) {
     return Scaffold(
-        key: _scaffold_key,
         body: Container(
             height: 880,
             color: Color(0xFF595959),
             child: SafeArea(
                 child: SingleChildScrollView(
                     child: Form(
-              key: _form_key,
+              key: _formKey,
               child: Container(
                 child: Column(children: <Widget>[
                   Container(
@@ -118,14 +120,14 @@ class _sign_up_state extends State<sign_up> {
                 validator: (value) {
                   if (value == null) {
                     return "Please fill email";
-                  } else if (!reg_exp_email.hasMatch(value)) {
+                  } else if (!regExpEmail.hasMatch(value)) {
                     return "Email is invalid";
                   }
                   return null;
                 },
                 name: "Email"),
             MyPasswordField(
-              obscure_text: obscure_text,
+              obscureText: obscureText,
               onChanged: (value) {
                 setState(() {
                   password = value;
@@ -136,14 +138,14 @@ class _sign_up_state extends State<sign_up> {
                   return "Please fill password";
                 } else if (value.length < 8) {
                   return "Password is too short, try with 8 chars";
-                } else if (!reg_exp_password.hasMatch(value)) {
+                } else if (!regExpPassword.hasMatch(value)) {
                   return "Password must contain at least one uppercase, one lower case, at least one digit and one special char ";
                 }
               },
               name: "Password",
               onTap: () {
                 setState(() {
-                  obscure_text = !obscure_text;
+                  obscureText = !obscureText;
                 });
                 FocusScope.of(context).unfocus();
               },
@@ -170,7 +172,7 @@ class _sign_up_state extends State<sign_up> {
               descriptionLink: "Already have an account?",
               onTap: () {
                 Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(builder: (ctx) => login()));
+                    MaterialPageRoute(builder: (ctx) => Login()));
               },
             )
           ],

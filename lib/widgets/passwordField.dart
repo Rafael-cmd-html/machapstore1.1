@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class MyPasswordField extends StatelessWidget {
-  final bool? obscure_text;
+  final bool? obscureText;
   final String? Function(String?)? validator;
   final String? name;
   final VoidCallback? onTap;
@@ -9,7 +9,7 @@ class MyPasswordField extends StatelessWidget {
 
   MyPasswordField(
       {this.name,
-      this.obscure_text,
+      this.obscureText,
       this.onTap,
       this.validator,
       this.onChanged});
@@ -17,7 +17,7 @@ class MyPasswordField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
         style: TextStyle(color: Colors.white),
-        obscureText: obscure_text!,
+        obscureText: obscureText!,
         onChanged: onChanged,
         validator: validator,
         decoration: InputDecoration(
@@ -25,7 +25,7 @@ class MyPasswordField extends StatelessWidget {
           suffixIcon: GestureDetector(
             onTap: onTap,
             child: Icon(
-                obscure_text == true ? Icons.visibility : Icons.visibility_off,
+                obscureText == true ? Icons.visibility : Icons.visibility_off,
                 color: Colors.white),
           ),
           hintStyle: TextStyle(color: Colors.white),

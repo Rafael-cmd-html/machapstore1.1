@@ -1,32 +1,36 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:machapstore1/screens/signUp.dart';
-import 'package:machapstore1/widgets/change_screen.dart';
-import 'package:machapstore1/widgets/my_button.dart';
-import 'package:machapstore1/widgets/my_text_form_field.dart';
-import 'package:machapstore1/widgets/password_text_field.dart';
+import 'package:machapstore1/widgets/changeScreen.dart';
+import 'package:machapstore1/widgets/myButton.dart';
+import 'package:machapstore1/widgets/myTextFormField.dart';
+import 'package:machapstore1/widgets/passwordField.dart';
 
-class login extends StatefulWidget {
+//Class who is in charge of create a statfulWidget
+class Login extends StatefulWidget {
   @override
-  _login_state createState() => _login_state();
+  _LoginState createState() => _LoginState();
 }
 
-final GlobalKey<FormState> _form_key = GlobalKey<FormState>();
-bool obscure_text = true;
-String ep_email =
+//Regular expresion type variables
+String epEmail =
     r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
-String ep_password =
+String epPassword =
     r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
 
-RegExp reg_exp_email = new RegExp(ep_email);
-RegExp reg_exp_password = new RegExp(ep_password);
+//Variables declaration
+RegExp regExpEmail = new RegExp(epEmail);
+RegExp regExpPassword = new RegExp(epPassword);
+final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+bool obscureText = true;
 
 String? email;
 String? password;
 
-class _login_state extends State<login> {
+//Class loginState who brings up the state for the Login class and build all the screen
+class _LoginState extends State<Login> {
   void validation() async {
-    final FormState? _form = _form_key.currentState;
+    final FormState? _form = _formKey.currentState;
     if (_form != null && _form.validate()) {
       try {
         UserCredential result = await FirebaseAuth.instance
@@ -45,7 +49,7 @@ class _login_state extends State<login> {
         body: Container(
             color: Color(0xFF595959), // Color gris #595959
             child: Form(
-                key: _form_key,
+                key: _formKey,
                 child: Container(
                     child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -80,12 +84,12 @@ class _login_state extends State<login> {
                             },
                           ),
                           ChangScreen(
-                            name: "SignUp",
+                            name: "Signup",
                             descriptionLink: "I don´t have an account",
                             onTap: () {
                               Navigator.of(context).pushReplacement(
                                   MaterialPageRoute(
-                                      builder: (ctx) => sign_up()));
+                                      builder: (ctx) => SignUp()));
                             },
                           )
                         ],
@@ -112,7 +116,7 @@ class _login_state extends State<login> {
               validator: (value) {
                 if (value == null) {
                   return "Please fill email";
-                } else if (!reg_exp_email.hasMatch(value)) {
+                } else if (!regExpEmail.hasMatch(value)) {
                   return "Email is invalid";
                 }
                 return null;
@@ -130,14 +134,14 @@ class _login_state extends State<login> {
                     return "Please fill password";
                   } else if (value.length < 8) {
                     return "Password is too short, try with 8 chars";
-                  } else if (!reg_exp_password.hasMatch(value)) {
+                  } else if (!regExpPassword.hasMatch(value)) {
                     return "Password must contain at least one uppercase, one lower case, at least one digit and one special char ";
                   }
                 },
-                obscure_text: obscure_text,
+                obscureText: obscureText,
                 onTap: () {
                   setState(() {
-                    obscure_text = !obscure_text;
+                    obscureText = !obscureText;
                   });
                   FocusScope.of(context).unfocus();
                 }),
