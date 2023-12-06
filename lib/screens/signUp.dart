@@ -67,7 +67,7 @@ class _SignUpState extends State<SignUp> {
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: <Widget>[
                           Text(
-                            "Sign Up",
+                            "Registrarse",
                             style: TextStyle(
                                 fontSize: 30,
                                 fontWeight: FontWeight.bold,
@@ -95,21 +95,22 @@ class _SignUpState extends State<SignUp> {
                 // Coloca la imagen redonda aquí
                 CircleAvatar(
                     radius: 50,
-                    backgroundImage: AssetImage('assets/images/machape.png'))
+                    backgroundImage:
+                        AssetImage('assets/images/resourceImages/machape.png'))
               ],
             ),
             MyTextField(
               validator: (value) {
                 if (value == null) {
-                  return "Please fill name";
+                  return "Ingresa tu nombre";
                 } else if (value.isEmpty) {
-                  return "Please fill name";
+                  return "Ingresa tu nombre";
                 } else if (value.length < 6) {
-                  return "Name is too short";
+                  return "Nombre muy corto";
                 }
                 return null;
               },
-              name: "Name",
+              name: "Nombre",
             ),
             MyTextField(
                 onChanged: (value) {
@@ -119,13 +120,13 @@ class _SignUpState extends State<SignUp> {
                 },
                 validator: (value) {
                   if (value == null) {
-                    return "Please fill email";
+                    return "Ingresa un email";
                   } else if (!regExpEmail.hasMatch(value)) {
-                    return "Email is invalid";
+                    return "Ingresa un email válido";
                   }
                   return null;
                 },
-                name: "Email"),
+                name: "Correo"),
             MyPasswordField(
               obscureText: obscureText,
               onChanged: (value) {
@@ -135,14 +136,14 @@ class _SignUpState extends State<SignUp> {
               },
               validator: (value) {
                 if (value == null) {
-                  return "Please fill password";
+                  return "Ingresa una contraseña";
                 } else if (value.length < 8) {
-                  return "Password is too short, try with 8 chars";
+                  return "La contraseña debe ser al menos de 8 caracteres";
                 } else if (!regExpPassword.hasMatch(value)) {
-                  return "Password must contain at least one uppercase, one lower case, at least one digit and one special char ";
+                  return "La contraseña debe contener al menos una mayúscula, \n una minúscula, al menos un dígito y un \n carácter especial.";
                 }
               },
-              name: "Password",
+              name: "Contraseña",
               onTap: () {
                 setState(() {
                   obscureText = !obscureText;
@@ -166,10 +167,10 @@ class _SignUpState extends State<SignUp> {
                 onPressed: () {
                   validation();
                 },
-                name: "SignUp"),
+                name: "Registrarse"),
             ChangScreen(
-              name: "Login",
-              descriptionLink: "Already have an account?",
+              name: "¡Inicia sesión!",
+              descriptionLink: "¿Ya tienes una cuenta?",
               onTap: () {
                 Navigator.of(context).pushReplacement(
                     MaterialPageRoute(builder: (ctx) => Login()));

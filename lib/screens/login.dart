@@ -65,12 +65,12 @@ class _LoginState extends State<Login> {
                               // Coloca la imagen redonda aquí
                               CircleAvatar(
                                   radius: 50,
-                                  backgroundImage:
-                                      AssetImage('assets/images/machape.png'))
+                                  backgroundImage: AssetImage(
+                                      'assets/images/resourceImages/machape.png'))
                             ],
                           ),
                           Text(
-                            "Login",
+                            "Iniciar sesión",
                             style: TextStyle(
                                 fontSize: 30,
                                 fontWeight: FontWeight.bold,
@@ -78,14 +78,14 @@ class _LoginState extends State<Login> {
                           ),
                           _buildTextFields(),
                           my_button(
-                            name: "Login",
+                            name: "Entrar",
                             onPressed: () {
                               validation();
                             },
                           ),
                           ChangScreen(
-                            name: "Signup",
-                            descriptionLink: "I don´t have an account",
+                            name: "¡Crea una!",
+                            descriptionLink: "¿No tienes una cuenta?",
                             onTap: () {
                               Navigator.of(context).pushReplacement(
                                   MaterialPageRoute(
@@ -107,7 +107,7 @@ class _LoginState extends State<Login> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             MyTextField(
-              name: "Email",
+              name: "Correo",
               onChanged: (value) {
                 setState(() {
                   email = value;
@@ -115,15 +115,15 @@ class _LoginState extends State<Login> {
               },
               validator: (value) {
                 if (value == null) {
-                  return "Please fill email";
+                  return "Ingresa tu correo";
                 } else if (!regExpEmail.hasMatch(value)) {
-                  return "Email is invalid";
+                  return "Email invalido";
                 }
                 return null;
               },
             ),
             MyPasswordField(
-                name: "Password",
+                name: "Contraseña",
                 onChanged: (value) {
                   setState(() {
                     password = value;
@@ -131,11 +131,11 @@ class _LoginState extends State<Login> {
                 },
                 validator: (value) {
                   if (value == null) {
-                    return "Please fill password";
+                    return "Ingresa una contraseña";
                   } else if (value.length < 8) {
-                    return "Password is too short, try with 8 chars";
+                    return "Contraseña demasiado corta";
                   } else if (!regExpPassword.hasMatch(value)) {
-                    return "Password must contain at least one uppercase, one lower case, at least one digit and one special char ";
+                    return "Contraseña inválida";
                   }
                 },
                 obscureText: obscureText,
