@@ -1,6 +1,49 @@
 import 'package:flutter/material.dart';
+import 'package:machapstore1/widgets/myTextFormField.dart';
 
 class HomePage extends StatelessWidget {
+  Widget _buildFeatureProduct(
+      {String? name, double? price, String? image, String, String? categorie}) {
+    return Card(
+      elevation: 5,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20.0),
+      ),
+      child: Container(
+        height: 270,
+        width: 180,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Column(
+          children: <Widget>[
+            Container(
+              height: 190,
+              width: 160,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                    image: AssetImage(
+                        'assets/images/productsImages/$categorie/$image')),
+              ),
+            ),
+            Text(
+              "\$ $price",
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 17,
+                  color: Colors.grey[700]),
+            ),
+            Text(
+              name!,
+              style: TextStyle(fontSize: 17),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   @override
   Widget build(BuildContext context) {
@@ -39,59 +82,54 @@ class HomePage extends StatelessWidget {
             height: double.infinity,
             width: double.infinity,
             margin: EdgeInsets.symmetric(horizontal: 20),
-            child: Column(children: <Widget>[
-              Container(
-                height: 120,
-                width: double.infinity,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: <Widget>[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Text(
-                          "Destacados",
-                          style: TextStyle(
-                              fontSize: 17, fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          "Todos",
-                          style: TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.bold),
-                        )
-                      ],
-                    )
-                  ],
-                ),
-              ),
-              Row(
-                children: <Widget>[
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+            child: Column(
+              children: <Widget>[
+                Container(
+                  height: 120,
+                  width: double.infinity,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Card(
-                        child: Container(
-                          height: 250,
-                          width: 180,
-                          color: Color(0xFFE9E9E9),
-                          child: Column(
-                            children: <Widget>[
-                              Container(
-                                height: 120,
-                                width: 150,
-                                decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                        image: AssetImage(
-                                            'assets/images/resourceImages/machape.png'))),
-                              )
-                            ],
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          TextFormField(),
+                          SizedBox(height: 16),
+                          Text(
+                            "Destacados",
+                            style: TextStyle(
+                                fontSize: 17, fontWeight: FontWeight.bold),
                           ),
-                        ),
+                          Text(
+                            "Todos",
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.bold),
+                          )
+                        ],
                       )
                     ],
-                  )
-                ],
-              )
-            ])));
+                  ),
+                ),
+                Container(
+                    height: 270,
+                    width: double.infinity,
+                    child: ListView(
+                      scrollDirection: Axis.horizontal,
+                      children: <Widget>[
+                        _buildFeatureProduct(
+                            name: "Mochila",
+                            price: 200.0,
+                            image: "backpack.png",
+                            categorie: "accesorios"),
+                        SizedBox(width: 16),
+                        _buildFeatureProduct(
+                            name: "Bocina",
+                            price: 500.0,
+                            image: "speaker.png",
+                            categorie: "electro"),
+                      ],
+                    ))
+              ],
+            )));
   }
 }
