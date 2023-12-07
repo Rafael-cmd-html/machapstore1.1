@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:machapstore1/screens/detailsScreen.dart';
 import 'package:machapstore1/screens/homePage.dart';
 import 'package:machapstore1/screens/listProducts.dart';
 import 'package:machapstore1/screens/login.dart';
@@ -18,8 +19,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Machapstore',
-      home: HomePage(),
+      home: DetailScreen(),
     );
   }
 }

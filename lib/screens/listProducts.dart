@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:machapstore1/screens/homePage.dart';
 
 class ListProducts extends StatelessWidget {
+  final String? name;
+  ListProducts({this.name});
   Widget _buildFeatureProduct({
     String? name,
     double? price,
@@ -17,7 +20,7 @@ class ListProducts extends StatelessWidget {
         height: 270,
         width: 180,
         decoration: BoxDecoration(
-          color: Color(0XFFd7c7b6),
+          color: Color(0XFFffd973),
           borderRadius: BorderRadius.circular(20),
         ),
         child: Column(
@@ -64,7 +67,10 @@ class ListProducts extends StatelessWidget {
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           color: Colors.white,
-          onPressed: () {},
+          onPressed: () {
+            Navigator.of(context).pushReplacement(
+                MaterialPageRoute(builder: (ctx) => HomePage()));
+          },
         ),
         actions: <Widget>[
           IconButton(
@@ -92,7 +98,7 @@ class ListProducts extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Text(
-                        "Destacados",
+                        name!,
                         style: TextStyle(
                           fontSize: 17,
                           fontWeight: FontWeight.bold,
@@ -103,6 +109,9 @@ class ListProducts extends StatelessWidget {
                   ),
                 ],
               ),
+            ),
+            SizedBox(
+              height: 10,
             ),
             Expanded(
               child: GridView.count(

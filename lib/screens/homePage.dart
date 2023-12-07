@@ -1,9 +1,22 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:machapstore1/screens/listProducts.dart';
 import 'package:machapstore1/widgets/myTextFormField.dart';
-import 'package:carousel_pro_nullsafety/carousel_pro_nullsafety.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  final List<String> images = [
+    'assets/images/productsImages/accesorios/walletmen.png',
+    'assets/images/productsImages/accesorios/gloves.png',
+    'assets/images/productsImages/accesorios/walletwoman.png',
+    'assets/images/productsImages/accesorios/neck.png',
+    'assets/images/productsImages/accesorios/scarf.png',
+  ];
   Widget _buildFeatureProduct(
       {String? name, double? price, String? image, String, String? categorie}) {
     return Card(
@@ -16,7 +29,7 @@ class HomePage extends StatelessWidget {
         height: 270,
         width: 180,
         decoration: BoxDecoration(
-          color: Color(0XFFd7c7b6),
+          color: Color(0XFFffd973),
           borderRadius: BorderRadius.circular(20),
         ),
         child: Column(
@@ -50,7 +63,7 @@ class HomePage extends StatelessWidget {
   Widget _buildCategoryIcon({String? image}) {
     return CircleAvatar(
         radius: 30,
-        backgroundColor: Color(0XFF708090),
+        backgroundColor: Color(0XFFffd973),
         child: Container(
             height: 50,
             child: Image(
@@ -59,13 +72,142 @@ class HomePage extends StatelessWidget {
   }
 
   final GlobalKey<ScaffoldState> _key = GlobalKey();
+  bool homeSelected = true;
+  bool cartSelected = false;
+  bool aboutSelected = false;
+  bool logOutSelected = false;
+  bool contactSelected = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0XFF708090),
       key: _key,
       drawer: Drawer(
-        backgroundColor: Color(0XFF708090),
+        backgroundColor: Color(0XFFffd973),
+        child: Column(children: <Widget>[
+          UserAccountsDrawerHeader(
+            margin: EdgeInsets.symmetric(vertical: 0, horizontal: 0),
+            accountName: Text(
+              "Rafael",
+              style:
+                  TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+            ),
+            currentAccountPicture: CircleAvatar(
+                backgroundColor: Colors.grey[400],
+                radius: 20,
+                child:
+                    Image.asset("assets/images/resourceImages/userIcon.png")),
+            decoration: BoxDecoration(color: Color(0XFF708090)),
+            accountEmail: Text("rafael@gmail.com",
+                style: TextStyle(
+                    color: Colors.white, fontWeight: FontWeight.bold)),
+          ),
+          ListTile(
+            selected: homeSelected,
+            selectedTileColor: Color(0XFF708090),
+            onTap: () {
+              setState(() {
+                homeSelected = true;
+                contactSelected = false;
+                aboutSelected = false;
+                logOutSelected = false;
+                cartSelected = false;
+              });
+            },
+            leading: Icon(
+              Icons.home,
+              color: homeSelected ? Colors.white : Color(0xFF30383F),
+            ),
+            title: Text("Inicio",
+                style: TextStyle(
+                  color: homeSelected ? Colors.white : Color(0xFF30383F),
+                )),
+          ),
+          ListTile(
+            selected: cartSelected,
+            selectedTileColor: Color(0XFF708090),
+            onTap: () {
+              setState(() {
+                cartSelected = true;
+                contactSelected = false;
+                aboutSelected = false;
+                logOutSelected = false;
+                homeSelected = false;
+              });
+            },
+            leading: Icon(
+              Icons.shopping_cart,
+              color: cartSelected ? Colors.white : Color(0xFF30383F),
+            ),
+            title: Text("Carrito",
+                style: TextStyle(
+                  color: cartSelected ? Colors.white : Color(0xFF30383F),
+                )),
+          ),
+          ListTile(
+            selected: aboutSelected,
+            selectedTileColor: Color(0XFF708090),
+            onTap: () {
+              setState(() {
+                aboutSelected = true;
+                contactSelected = false;
+                cartSelected = false;
+                logOutSelected = false;
+                homeSelected = false;
+              });
+            },
+            leading: Icon(
+              Icons.info,
+              color: aboutSelected ? Colors.white : Color(0xFF30383F),
+            ),
+            title: Text("Sobre nosotros",
+                style: TextStyle(
+                  color: aboutSelected ? Colors.white : Color(0xFF30383F),
+                )),
+          ),
+          ListTile(
+            selected: contactSelected,
+            selectedTileColor: Color(0XFF708090),
+            onTap: () {
+              setState(() {
+                contactSelected = true;
+                cartSelected = false;
+                aboutSelected = false;
+                logOutSelected = false;
+                homeSelected = false;
+              });
+            },
+            leading: Icon(
+              Icons.phone,
+              color: contactSelected ? Colors.white : Color(0xFF30383F),
+            ),
+            title: Text("Contáctanos",
+                style: TextStyle(
+                  color: contactSelected ? Colors.white : Color(0xFF30383F),
+                )),
+          ),
+          ListTile(
+            selected: logOutSelected,
+            selectedTileColor: Color(0XFF708090),
+            onTap: () {
+              setState(() {
+                logOutSelected = true;
+                contactSelected = false;
+                aboutSelected = false;
+                cartSelected = false;
+                homeSelected = false;
+              });
+            },
+            leading: Icon(
+              Icons.exit_to_app,
+              color: logOutSelected ? Colors.white : Color(0xFF30383F),
+            ),
+            title: Text("Cerrar sesión",
+                style: TextStyle(
+                  color: logOutSelected ? Colors.white : Color(0xFF30383F),
+                )),
+          ),
+        ]),
       ),
       appBar: AppBar(
         flexibleSpace: Container(
@@ -105,15 +247,32 @@ class HomePage extends StatelessWidget {
         margin: EdgeInsets.symmetric(horizontal: 20),
         child: ListView(
           children: <Widget>[
-            Container(
-                height: 200,
-                child: Container(
-                    height: 200.0,
-                    child: PageView.builder(
-                        itemCount: images.length,
-                        itemBuilder: (context, index) {
-                          return Image.asset(images[index], fit: BoxFit.cover);
-                        }))),
+            CarouselSlider(
+              options: CarouselOptions(
+                height: 200.0,
+                enlargeCenterPage: true,
+                autoPlay: true,
+                aspectRatio: 0.0,
+                autoPlayCurve: Curves.fastOutSlowIn,
+                enableInfiniteScroll: true,
+                autoPlayAnimationDuration: Duration(milliseconds: 800),
+                viewportFraction: 0.8,
+              ),
+              items: images.map((String imagePath) {
+                return Builder(
+                  builder: (BuildContext context) {
+                    return Container(
+                      width: MediaQuery.of(context).size.width,
+                      margin: EdgeInsets.symmetric(horizontal: 5.0),
+                      child: Image.asset(
+                        imagePath,
+                        fit: BoxFit.contain,
+                      ),
+                    );
+                  },
+                );
+              }).toList(),
+            ),
             Container(
                 height: 60,
                 child: Row(
@@ -124,11 +283,6 @@ class HomePage extends StatelessWidget {
                               fontSize: 17,
                               fontWeight: FontWeight.bold,
                               color: Colors.white)),
-                      Text("Ver todo",
-                          style: TextStyle(
-                              fontSize: 17,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white))
                     ])),
             Container(
                 height: 50,
@@ -157,7 +311,7 @@ class HomePage extends StatelessWidget {
                   ],
                 )),
             Container(
-              height: 120,
+              height: 90,
               width: double.infinity,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -177,13 +331,20 @@ class HomePage extends StatelessWidget {
                                       fontWeight: FontWeight.bold,
                                       color: Colors.white),
                                 ),
-                                Text(
-                                  "Todos",
-                                  style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white),
-                                )
+                                GestureDetector(
+                                    onTap: () {
+                                      Navigator.of(context).pushReplacement(
+                                          MaterialPageRoute(
+                                              builder: (ctx) => ListProducts(
+                                                  name: "Destacados")));
+                                    },
+                                    child: Text(
+                                      "Ver más",
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white),
+                                    ))
                               ],
                             )
                           ]))
@@ -191,7 +352,7 @@ class HomePage extends StatelessWidget {
               ),
             ),
             Container(
-                height: 270,
+                height: 250,
                 width: double.infinity,
                 child: ListView(
                     scrollDirection: Axis.horizontal,
@@ -229,13 +390,20 @@ class HomePage extends StatelessWidget {
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white),
                           ),
-                          Text(
-                            "Todos",
-                            style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white),
-                          )
+                          GestureDetector(
+                              onTap: () {
+                                Navigator.of(context).pushReplacement(
+                                    MaterialPageRoute(
+                                        builder: (ctx) => ListProducts(
+                                            name: "Recien llegados")));
+                              },
+                              child: Text(
+                                "Ver más",
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white),
+                              ))
                         ],
                       )
                     ])),
