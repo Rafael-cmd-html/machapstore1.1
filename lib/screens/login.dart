@@ -47,7 +47,7 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: Container(
-            color: Color(0xFF595959), // Color gris #595959
+            color: Color(0XFF708090), // Color gris #595959
             child: Form(
                 key: _formKey,
                 child: Container(

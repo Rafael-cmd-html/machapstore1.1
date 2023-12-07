@@ -54,7 +54,7 @@ class _SignUpState extends State<SignUp> {
     return Scaffold(
         body: Container(
             height: 880,
-            color: Color(0xFF595959),
+            color: Color(0XFF708090),
             child: SafeArea(
                 child: SingleChildScrollView(
                     child: Form(

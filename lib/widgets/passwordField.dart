@@ -32,6 +32,14 @@ class MyPasswordField extends StatelessWidget {
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(15.0),
           ),
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.white),
+            borderRadius: BorderRadius.circular(15),
+          ),
+          disabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.white),
+            borderRadius: BorderRadius.circular(15),
+          ),
           focusedBorder: OutlineInputBorder(
               borderSide: BorderSide(color: Colors.white),
               borderRadius: BorderRadius.circular(15.0)),

@@ -18,6 +18,14 @@ class MyTextField extends StatelessWidget {
             borderSide: BorderSide(color: Colors.white),
             borderRadius: BorderRadius.circular(15.0)),
         hintText: name!,
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.white),
+          borderRadius: BorderRadius.circular(15),
+        ),
+        disabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.white),
+          borderRadius: BorderRadius.circular(15),
+        ),
         hintStyle: TextStyle(color: Colors.white),
       ),
     );
