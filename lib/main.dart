@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:machapstore1/screens/cartScreen.dart';
 import 'package:machapstore1/screens/detailsScreen.dart';
 import 'package:machapstore1/screens/homePage.dart';
 import 'package:machapstore1/screens/listProducts.dart';

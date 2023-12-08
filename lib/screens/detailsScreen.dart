@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:machapstore1/screens/cartScreen.dart';
 import 'package:machapstore1/screens/homePage.dart';
 
 class DetailScreen extends StatefulWidget {
@@ -33,36 +34,40 @@ class _DetailScreenState extends State<DetailScreen> {
     return Container(height: 40, width: 40, color: color!);
   }
 
+  PreferredSizeWidget? _buildMyAppBar() {
+    return AppBar(
+      centerTitle: true,
+      title: Text(
+        "Detalles del producto",
+        style: TextStyle(color: Colors.white),
+      ),
+      backgroundColor: Color(0XFF708090),
+      elevation: 0.0,
+      leading: IconButton(
+        icon: Icon(
+          Icons.arrow_back,
+          color: Colors.white,
+        ),
+        onPressed: () {
+          Navigator.of(context)
+              .pushReplacement(MaterialPageRoute(builder: (ctx) => HomePage()));
+        },
+      ),
+      actions: <Widget>[
+        IconButton(
+            onPressed: () {},
+            icon: Icon(
+              Icons.notifications,
+              color: Colors.white,
+            ))
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text(
-          "Detalles del producto",
-          style: TextStyle(color: Colors.white),
-        ),
-        backgroundColor: Color(0XFF708090),
-        elevation: 0.0,
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back,
-            color: Colors.white,
-          ),
-          onPressed: () {
-            Navigator.of(context).pushReplacement(
-                MaterialPageRoute(builder: (ctx) => HomePage()));
-          },
-        ),
-        actions: <Widget>[
-          IconButton(
-              onPressed: () {},
-              icon: Icon(
-                Icons.notifications,
-                color: Colors.white,
-              ))
-        ],
-      ),
+      appBar: _buildMyAppBar(),
       body: Container(
         color: Color(0XFF708090),
         child: ListView(
@@ -243,7 +248,15 @@ class _DetailScreenState extends State<DetailScreen> {
                         // ... (otras propiedades del Container)
                         child: ElevatedButton(
                           onPressed: () {
-                            // Manejar la acción cuando se presiona el botón
+                            Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(
+                                builder: (ctx) => CartScreen(
+                                  image: widget.image,
+                                  name: widget.name,
+                                  price: widget.price,
+                                ),
+                              ),
+                            );
                           },
                           style: ElevatedButton.styleFrom(
                             primary: Colors.black, // Color de fondo del botón
