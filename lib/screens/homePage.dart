@@ -1,14 +1,27 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:machapstore1/screens/detailsScreen.dart';
 import 'package:machapstore1/screens/listProducts.dart';
 import 'package:machapstore1/widgets/myTextFormField.dart';
+import '../model/product.dart';
 
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
 }
+
+Product? featured1;
+Product? featured2;
+var mySnapShot;
+var newAchievesSnap;
+var clotheSnap;
+var electroSnap;
+var celPhoneSnap;
+var accesoriesSnap;
+Product? newAchieves1;
+Product? newAchieves2;
 
 class _HomePageState extends State<HomePage> {
   final List<String> images = [
@@ -19,7 +32,7 @@ class _HomePageState extends State<HomePage> {
     'assets/images/productsImages/accesorios/scarf.png',
   ];
   Widget _buildFeatureProduct(
-      {String? name, double? price, String? image, String, String? categorie}) {
+      {String? name, int? price, String? image, String, String? categorie}) {
     return Card(
       color: Colors.white,
       elevation: 5,
@@ -39,9 +52,7 @@ class _HomePageState extends State<HomePage> {
               height: 190,
               width: 160,
               decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: AssetImage(
-                        'assets/images/productsImages/$categorie/$image')),
+                image: DecorationImage(image: NetworkImage(image!)),
               ),
             ),
             Text(
@@ -254,19 +265,67 @@ class _HomePageState extends State<HomePage> {
           SizedBox(
             width: 20,
           ),
-          _buildCategoryIcon(image: "ropa.png"),
+          GestureDetector(
+            child: _buildCategoryIcon(image: "ropa.png"),
+            onTap: () {
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (ctx) => ListProducts(
+                    name: "Ropa",
+                    snapShot: clotheSnap,
+                  ),
+                ),
+              );
+            },
+          ),
           SizedBox(
             width: 30,
           ),
-          _buildCategoryIcon(image: "electronica.png"),
+          GestureDetector(
+            child: _buildCategoryIcon(image: "electronica.png"),
+            onTap: () {
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (ctx) => ListProducts(
+                    name: "Electrónica",
+                    snapShot: electroSnap,
+                  ),
+                ),
+              );
+            },
+          ),
           SizedBox(
             width: 30,
           ),
-          _buildCategoryIcon(image: "telefono.png"),
+          GestureDetector(
+            child: _buildCategoryIcon(image: "telefono.png"),
+            onTap: () {
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (ctx) => ListProducts(
+                    name: "Celulares",
+                    snapShot: celPhoneSnap,
+                  ),
+                ),
+              );
+            },
+          ),
           SizedBox(
             width: 30,
           ),
-          _buildCategoryIcon(image: "accesorios.png"),
+          GestureDetector(
+            child: _buildCategoryIcon(image: "accesorios.png"),
+            onTap: () {
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (ctx) => ListProducts(
+                    name: "Accesorios",
+                    snapShot: accesoriesSnap,
+                  ),
+                ),
+              );
+            },
+          ),
           SizedBox(
             width: 30,
           ),
@@ -299,10 +358,12 @@ class _HomePageState extends State<HomePage> {
                         ),
                         GestureDetector(
                             onTap: () {
-                              Navigator.of(context).pushReplacement(
-                                  MaterialPageRoute(
-                                      builder: (ctx) =>
-                                          ListProducts(name: "Destacados")));
+                              Navigator.of(context)
+                                  .pushReplacement(MaterialPageRoute(
+                                      builder: (ctx) => ListProducts(
+                                            name: "Destacados",
+                                            snapShot: mySnapShot,
+                                          )));
                             },
                             child: Text(
                               "Ver más",
@@ -321,60 +382,51 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildFeaturedSection() {
     return Container(
-        height: 250,
-        width: double.infinity,
-        child: ListView(scrollDirection: Axis.horizontal, children: <Widget>[
-          Row(children: <Widget>[
-            GestureDetector(
-              onTap: () {
-                Navigator.of(context).pushReplacement(MaterialPageRoute(
-                  builder: (ctx) => DetailScreen(
-                      name: "Mochila",
-                      price: 200.0,
-                      image:
-                          "assets/images/productsImages/accesorios/backpack.png"),
-                ));
-              },
-              child: _buildFeatureProduct(
-                  name: "Mochila",
-                  price: 200.0,
-                  image: "backpack.png",
-                  categorie: "accesorios"),
-            ),
-            GestureDetector(
-              onTap: () {
-                Navigator.of(context).pushReplacement(MaterialPageRoute(
-                  builder: (ctx) => DetailScreen(
-                      name: "Bocina",
-                      price: 500.0,
-                      image:
-                          "assets/images/productsImages/electro/speaker.png"),
-                ));
-              },
-              child: _buildFeatureProduct(
-                  name: "Bocina",
-                  price: 500.0,
-                  image: "speaker.png",
-                  categorie: "electro"),
-            ),
-            GestureDetector(
-              onTap: () {
-                Navigator.of(context).pushReplacement(MaterialPageRoute(
-                  builder: (ctx) => DetailScreen(
-                      name: "Bocina alta resolución",
-                      price: 500.0,
-                      image:
-                          "assets/images/productsImages/electro/speaker2.png"),
-                ));
-              },
-              child: _buildFeatureProduct(
-                  name: "Bocina alta resolución",
-                  price: 500.0,
-                  image: "speaker2.png",
-                  categorie: "electro"),
-            )
-          ])
-        ]));
+      height: 250,
+      width: double.infinity,
+      child: ListView(
+        scrollDirection: Axis.horizontal,
+        children: <Widget>[
+          Row(
+            children: <Widget>[
+              GestureDetector(
+                onTap: () {
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(
+                    builder: (ctx) => DetailScreen(
+                        name: featured1?.name,
+                        price: featured1?.price,
+                        image: featured1?.image),
+                  ));
+                },
+                child: _buildFeatureProduct(
+                  name: featured1?.name,
+                  price: featured1?.price,
+                  image: featured1?.image,
+                ),
+              ),
+              GestureDetector(
+                onTap: () {
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(
+                      builder: (ctx) => DetailScreen(
+                        name: featured2?.name,
+                        price: featured2?.price,
+                        image: featured2?.image,
+                      ),
+                    ),
+                  );
+                },
+                child: _buildFeatureProduct(
+                  name: featured2?.name,
+                  price: featured2?.price,
+                  image: featured2?.image,
+                ),
+              ),
+            ],
+          )
+        ],
+      ),
+    );
   }
 
   PreferredSizeWidget? _buildMyAppBar() {
@@ -430,8 +482,10 @@ class _HomePageState extends State<HomePage> {
               GestureDetector(
                   onTap: () {
                     Navigator.of(context).pushReplacement(MaterialPageRoute(
-                        builder: (ctx) =>
-                            ListProducts(name: "Recien llegados")));
+                        builder: (ctx) => ListProducts(
+                              name: "Recien llegados",
+                              snapShot: newAchievesSnap,
+                            )));
                   },
                   child: Text(
                     "Ver más",
@@ -455,51 +509,32 @@ class _HomePageState extends State<HomePage> {
           Row(
             children: <Widget>[
               GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).pushReplacement(MaterialPageRoute(
-                      builder: (ctx) => DetailScreen(
-                          name: "Porta tarjetas",
-                          price: 150.0,
-                          image:
-                              "assets/images/productsImages/accesorios/cardports.png"),
-                    ));
-                  },
-                  child: _buildFeatureProduct(
-                      name: "Porta tarjetas",
-                      price: 150.0,
-                      image: "cardports.png",
-                      categorie: "accesorios")),
-              GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).pushReplacement(MaterialPageRoute(
-                      builder: (ctx) => DetailScreen(
-                          name: "Guantes",
-                          price: 300.0,
-                          image:
-                              "assets/images/productsImages/accesorios/gloves.png"),
-                    ));
-                  },
-                  child: _buildFeatureProduct(
-                      name: "Guantes",
-                      price: 300.0,
-                      image: "gloves.png",
-                      categorie: "accesorios")),
-              GestureDetector(
                 onTap: () {
                   Navigator.of(context).pushReplacement(MaterialPageRoute(
                     builder: (ctx) => DetailScreen(
-                        name: "Audio set",
-                        price: 1500.0,
-                        image:
-                            "assets/images/productsImages/electro/audioset.png"),
+                        name: newAchieves1?.name,
+                        price: newAchieves1?.price,
+                        image: newAchieves1?.image),
                   ));
                 },
                 child: _buildFeatureProduct(
-                    name: "Audio set",
-                    price: 1500.0,
-                    image: "audioset.png",
-                    categorie: "electro"),
-              )
+                    name: newAchieves1?.name,
+                    price: newAchieves1?.price,
+                    image: newAchieves1?.image),
+              ),
+              GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                      builder: (ctx) => DetailScreen(
+                          name: newAchieves2?.name,
+                          price: newAchieves2?.price,
+                          image: newAchieves2?.image),
+                    ));
+                  },
+                  child: _buildFeatureProduct(
+                      name: newAchieves2?.name,
+                      price: newAchieves2?.price,
+                      image: newAchieves2?.image)),
             ],
           ),
         ],
@@ -520,25 +555,136 @@ class _HomePageState extends State<HomePage> {
       key: _key,
       drawer: _buildMyDrawer(),
       appBar: _buildMyAppBar(),
-      body: Container(
-        height: double.infinity,
-        width: double.infinity,
-        margin: EdgeInsets.symmetric(horizontal: 20),
-        child: ListView(
-          children: <Widget>[
-            /////
-            _buildMyCarousel(),
-            //////
-            _buildCategoriesTittle(),
-            _buildCategoriesSection(),
-            /////
-            _buildFeaturedTittle(),
-            _buildFeaturedSection(),
-            ////
-            _buildNewAchievmentsTitle(),
-            _buildNewAchievmentsSection()
-          ],
-        ),
+      body: FutureBuilder(
+        future: FirebaseFirestore.instance
+            .collection("products")
+            .doc("jBuIvyUjxfjuaYCLrkGH")
+            .collection("featureproduct")
+            .get(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          }
+          mySnapShot = snapshot;
+          featured1 = Product(
+            image: snapshot.data?.docs[0]["image"],
+            name: snapshot.data?.docs[0]["name"],
+            price: snapshot.data?.docs[0]["price"],
+          );
+          featured2 = Product(
+            image: snapshot.data?.docs[1]["image"],
+            name: snapshot.data?.docs[1]["name"],
+            price: snapshot.data?.docs[1]["price"],
+          );
+          return FutureBuilder(
+            future: FirebaseFirestore.instance
+                .collection("products")
+                .doc("jBuIvyUjxfjuaYCLrkGH")
+                .collection("clothes")
+                .get(),
+            builder: (context, clotheSnapShot) {
+              if (clotheSnapShot.connectionState == ConnectionState.waiting) {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+              clotheSnap = clotheSnapShot;
+              return FutureBuilder(
+                  future: FirebaseFirestore.instance
+                      .collection("products")
+                      .doc("jBuIvyUjxfjuaYCLrkGH")
+                      .collection("electronics")
+                      .get(),
+                  builder: (context, electroSnapShot) {
+                    if (clotheSnapShot.connectionState ==
+                        ConnectionState.waiting) {
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                    electroSnap = electroSnapShot;
+                    return FutureBuilder(
+                      future: FirebaseFirestore.instance
+                          .collection("products")
+                          .doc("jBuIvyUjxfjuaYCLrkGH")
+                          .collection("accesories")
+                          .get(),
+                      builder: (context, accesorieSnapShot) {
+                        if (accesorieSnapShot.connectionState ==
+                            ConnectionState.waiting) {
+                          return Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
+                        accesoriesSnap = accesorieSnapShot;
+                        return FutureBuilder(
+                          future: FirebaseFirestore.instance
+                              .collection("products")
+                              .doc("jBuIvyUjxfjuaYCLrkGH")
+                              .collection("phones")
+                              .get(),
+                          builder: (context, phoneSnapShot) {
+                            if (phoneSnapShot.connectionState ==
+                                ConnectionState.waiting) {
+                              return Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            }
+                            celPhoneSnap = phoneSnapShot;
+                            return FutureBuilder(
+                                future: FirebaseFirestore.instance
+                                    .collection("products")
+                                    .doc("jBuIvyUjxfjuaYCLrkGH")
+                                    .collection("newachives")
+                                    .get(),
+                                builder: (context, snapShot) {
+                                  if (snapShot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return Center(
+                                      child: CircularProgressIndicator(),
+                                    );
+                                  }
+                                  newAchievesSnap = snapShot;
+                                  newAchieves1 = Product(
+                                    image: snapShot.data?.docs[0]["image"],
+                                    name: snapShot.data?.docs[0]["name"],
+                                    price: snapShot.data?.docs[0]["price"],
+                                  );
+                                  newAchieves2 = Product(
+                                    image: snapShot.data?.docs[1]["image"],
+                                    name: snapShot.data?.docs[1]["name"],
+                                    price: snapShot.data?.docs[1]["price"],
+                                  );
+                                  return Container(
+                                    height: double.infinity,
+                                    width: double.infinity,
+                                    margin:
+                                        EdgeInsets.symmetric(horizontal: 20),
+                                    child: ListView(
+                                      children: <Widget>[
+                                        /////
+                                        _buildMyCarousel(),
+                                        //////
+                                        _buildCategoriesTittle(),
+                                        _buildCategoriesSection(),
+                                        /////
+                                        _buildFeaturedTittle(),
+                                        _buildFeaturedSection(),
+                                        ////
+                                        _buildNewAchievmentsTitle(),
+                                        _buildNewAchievmentsSection()
+                                      ],
+                                    ),
+                                  );
+                                });
+                          },
+                        );
+                      },
+                    );
+                  });
+            },
+          );
+        },
       ),
     );
   }

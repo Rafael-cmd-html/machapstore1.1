@@ -5,9 +5,10 @@ import 'package:machapstore1/screens/homePage.dart';
 class DetailScreen extends StatefulWidget {
   final String? image;
   final String? name;
-  final double? price;
+  final int? price;
+  final snap;
 
-  DetailScreen({this.image, this.name, this.price});
+  DetailScreen({this.image, this.name, this.price, this.snap});
   @override
   _DetailScreenState createState() => _DetailScreenState();
 }
@@ -84,7 +85,7 @@ class _DetailScreenState extends State<DetailScreen> {
                         decoration: BoxDecoration(
                             image: DecorationImage(
                                 fit: BoxFit.contain,
-                                image: AssetImage(widget.image!))),
+                                image: NetworkImage(widget.image!))),
                       ),
                     ),
                   ),

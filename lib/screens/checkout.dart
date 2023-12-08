@@ -1,18 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:machapstore1/screens/checkout.dart';
 
-class CartScreen extends StatefulWidget {
+class CheckOut extends StatefulWidget {
   final int? price;
   final String? name;
   final String? image;
-  CartScreen({this.image, this.name, this.price});
+  CheckOut({this.image, this.name, this.price});
   @override
-  State<CartScreen> createState() => _CartScreenState();
+  State<CheckOut> createState() => _CheckOutState();
 }
 
-class _CartScreenState extends State<CartScreen> {
-  int count = 1;
-
+class _CheckOutState extends State<CheckOut> {
   Widget _buildFavoriteCard() {
     return Container(
       height: 150,
@@ -54,46 +51,13 @@ class _CartScreenState extends State<CartScreen> {
                                 fontWeight: FontWeight.bold),
                           ),
                           Container(
-                            height: 30,
-                            width: 90,
-                            decoration: BoxDecoration(
-                              color: Colors.grey,
-                              borderRadius: BorderRadius.circular(20),
-                            ),
+                            height: 35,
+                            width: 100,
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: <Widget>[
-                                GestureDetector(
-                                  child: Icon(
-                                    Icons.remove,
-                                    color: Colors.white,
-                                  ),
-                                  onTap: () {
-                                    setState(() {
-                                      if (count > 1) {
-                                        count--;
-                                      }
-                                    });
-                                  },
-                                ),
-                                Text(
-                                  count.toString(),
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 18,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                                GestureDetector(
-                                  child: Icon(Icons.add, color: Colors.white),
-                                  onTap: () {
-                                    setState(
-                                      () {
-                                        count++;
-                                      },
-                                    );
-                                  },
-                                ),
+                                Text("Cantidad"),
+                                Text("1"),
                               ],
                             ),
                           ),
@@ -108,6 +72,16 @@ class _CartScreenState extends State<CartScreen> {
     );
   }
 
+  Widget _buildBottomDetails({String? startName, String? endName}) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        Text(startName!),
+        Text(endName!),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -116,23 +90,13 @@ class _CartScreenState extends State<CartScreen> {
         height: 65,
         padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         child: ElevatedButton(
-          onPressed: () {
-            Navigator.of(context).pushReplacement(
-              MaterialPageRoute(
-                builder: (ctx) => CheckOut(
-                  image: widget.image,
-                  name: widget.name,
-                  price: widget.price,
-                ),
-              ),
-            );
-          },
+          onPressed: () {},
           style: ElevatedButton.styleFrom(
             primary: Colors.black, // Color de fondo del botón
             minimumSize: Size(double.infinity, 45), // Tamaño mínimo del botón
           ),
           child: Text(
-            'Siguiente página',
+            'Comprar',
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.bold,
@@ -144,7 +108,7 @@ class _CartScreenState extends State<CartScreen> {
       appBar: AppBar(
         centerTitle: true,
         title: Text(
-          "Carrito",
+          "¡Ya casi es tuyo!",
           style: TextStyle(color: Colors.white),
         ),
         backgroundColor: Color(0XFF708090),
@@ -165,45 +129,46 @@ class _CartScreenState extends State<CartScreen> {
               ))
         ],
       ),
-      body: ListView(
-        children: <Widget>[
-          SizedBox(
-            height: 10,
-          ),
-          _buildFavoriteCard(),
-          SizedBox(
-            height: 10,
-          ),
-          _buildFavoriteCard(),
-          SizedBox(
-            height: 10,
-          ),
-          _buildFavoriteCard(),
-          SizedBox(
-            height: 10,
-          ),
-          _buildFavoriteCard(),
-          SizedBox(
-            height: 10,
-          ),
-          _buildFavoriteCard(),
-          SizedBox(
-            height: 10,
-          ),
-          _buildFavoriteCard(),
-          SizedBox(
-            height: 10,
-          ),
-          _buildFavoriteCard(),
-          SizedBox(
-            height: 10,
-          ),
-          _buildFavoriteCard(),
-          SizedBox(
-            height: 10,
-          ),
-          _buildFavoriteCard(),
-        ],
+      body: Container(
+        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+        child: ListView(
+          children: <Widget>[
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                _buildFavoriteCard(),
+                _buildFavoriteCard(),
+                _buildFavoriteCard(),
+                _buildFavoriteCard(),
+                _buildFavoriteCard(),
+                _buildFavoriteCard(),
+                Container(
+                    height: 150,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        _buildBottomDetails(
+                          startName: "Your Price",
+                          endName: ("\$ 600.00"),
+                        ),
+                        _buildBottomDetails(
+                          startName: "Descuento",
+                          endName: ("3%"),
+                        ),
+                        _buildBottomDetails(
+                          startName: "Costo envío",
+                          endName: ("\$ 60.00"),
+                        ),
+                        _buildBottomDetails(
+                          startName: "Total",
+                          endName: ("\$ 1200.00"),
+                        ),
+                      ],
+                    ))
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
