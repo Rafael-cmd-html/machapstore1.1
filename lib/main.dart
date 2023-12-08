@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Machapstore',
-      home: DetailScreen(),
+      home: HomePage(),
     );
   }
 }

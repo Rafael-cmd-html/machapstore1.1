@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:machapstore1/screens/detailsScreen.dart';
 import 'package:machapstore1/screens/listProducts.dart';
 import 'package:machapstore1/widgets/myTextFormField.dart';
 
@@ -358,21 +359,57 @@ class _HomePageState extends State<HomePage> {
                     scrollDirection: Axis.horizontal,
                     children: <Widget>[
                       Row(children: <Widget>[
-                        _buildFeatureProduct(
-                            name: "Mochila",
-                            price: 200.0,
-                            image: "backpack.png",
-                            categorie: "accesorios"),
-                        _buildFeatureProduct(
-                            name: "Bocina",
-                            price: 500.0,
-                            image: "speaker.png",
-                            categorie: "electro"),
-                        _buildFeatureProduct(
-                            name: "Bocina alta resolución",
-                            price: 500.0,
-                            image: "speaker2.png",
-                            categorie: "electro"),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.of(context)
+                                .pushReplacement(MaterialPageRoute(
+                              builder: (ctx) => DetailScreen(
+                                  name: "Mochila",
+                                  price: 200.0,
+                                  image:
+                                      "assets/images/productsImages/accesorios/backpack.png"),
+                            ));
+                          },
+                          child: _buildFeatureProduct(
+                              name: "Mochila",
+                              price: 200.0,
+                              image: "backpack.png",
+                              categorie: "accesorios"),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.of(context)
+                                .pushReplacement(MaterialPageRoute(
+                              builder: (ctx) => DetailScreen(
+                                  name: "Bocina",
+                                  price: 500.0,
+                                  image:
+                                      "assets/images/productsImages/electro/speaker.png"),
+                            ));
+                          },
+                          child: _buildFeatureProduct(
+                              name: "Bocina",
+                              price: 500.0,
+                              image: "speaker.png",
+                              categorie: "electro"),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.of(context)
+                                .pushReplacement(MaterialPageRoute(
+                              builder: (ctx) => DetailScreen(
+                                  name: "Bocina alta resolución",
+                                  price: 500.0,
+                                  image:
+                                      "assets/images/productsImages/electro/speaker2.png"),
+                            ));
+                          },
+                          child: _buildFeatureProduct(
+                              name: "Bocina alta resolución",
+                              price: 500.0,
+                              image: "speaker2.png",
+                              categorie: "electro"),
+                        )
                       ])
                     ])),
             Container(
@@ -414,21 +451,55 @@ class _HomePageState extends State<HomePage> {
                     scrollDirection: Axis.horizontal,
                     children: <Widget>[
                       Row(children: <Widget>[
-                        _buildFeatureProduct(
-                            name: "Porta tarjetas",
-                            price: 150.0,
-                            image: "cardports.png",
-                            categorie: "accesorios"),
-                        _buildFeatureProduct(
-                            name: "Guantes",
-                            price: 300.0,
-                            image: "gloves.png",
-                            categorie: "accesorios"),
-                        _buildFeatureProduct(
-                            name: "Audio set",
-                            price: 1500.0,
-                            image: "audioset.png",
-                            categorie: "electro"),
+                        GestureDetector(
+                            onTap: () {
+                              Navigator.of(context)
+                                  .pushReplacement(MaterialPageRoute(
+                                builder: (ctx) => DetailScreen(
+                                    name: "Porta tarjetas",
+                                    price: 150.0,
+                                    image:
+                                        "assets/images/productsImages/accesorios/cardports.png"),
+                              ));
+                            },
+                            child: _buildFeatureProduct(
+                                name: "Porta tarjetas",
+                                price: 150.0,
+                                image: "cardports.png",
+                                categorie: "accesorios")),
+                        GestureDetector(
+                            onTap: () {
+                              Navigator.of(context)
+                                  .pushReplacement(MaterialPageRoute(
+                                builder: (ctx) => DetailScreen(
+                                    name: "Guantes",
+                                    price: 300.0,
+                                    image:
+                                        "assets/images/productsImages/accesorios/gloves.png"),
+                              ));
+                            },
+                            child: _buildFeatureProduct(
+                                name: "Guantes",
+                                price: 300.0,
+                                image: "gloves.png",
+                                categorie: "accesorios")),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.of(context)
+                                .pushReplacement(MaterialPageRoute(
+                              builder: (ctx) => DetailScreen(
+                                  name: "Audio set",
+                                  price: 1500.0,
+                                  image:
+                                      "assets/images/productsImages/electro/audioset.png"),
+                            ));
+                          },
+                          child: _buildFeatureProduct(
+                              name: "Audio set",
+                              price: 1500.0,
+                              image: "audioset.png",
+                              categorie: "electro"),
+                        )
                       ])
                     ]))
           ],
